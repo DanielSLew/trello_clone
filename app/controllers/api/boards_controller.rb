@@ -19,12 +19,22 @@ class Api::BoardsController < ApplicationController
   end
 
   def show
-    @board = Board.find(params[:id])
+    set_board
   end
 
   private
 
   def board_params
     params.require(:board).permit(:title)
+  end
+
+  def set_board
+    begin
+      @board = Board.find(params[:id])
+    rescue 
+      @board = nil
+      @error = "Invalid board data provided"
+      render 'shared/error', status: :unprocessable_entity
+    end
   end
 end
