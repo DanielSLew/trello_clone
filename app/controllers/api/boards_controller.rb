@@ -31,7 +31,7 @@ class Api::BoardsController < ApplicationController
   def set_board
     begin
       @board = Board.find(params[:id])
-    rescue 
+    rescue ActiveRecord::RecordNotFound
       @board = nil
       @error = "Invalid board data provided"
       render 'shared/error', status: :unprocessable_entity
