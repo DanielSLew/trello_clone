@@ -1,10 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
+import ListListing from "./ListListing";
+import store from "../../lib/Store";
 
 const mapStateToProps = state => {
   return {
-    lists: state.lists,
-    cards: state.cards,
+    lists: store.getState().lists,
   };
 };
 

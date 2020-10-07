@@ -1,6 +1,7 @@
 import React from "react";
+import ListListingContainer from "../list/ListListingContainer";
 
-const Board = ({ board, lists, cards, }) => {
+const Board = ({ board }) => {
   return(
     <div>
       <header>

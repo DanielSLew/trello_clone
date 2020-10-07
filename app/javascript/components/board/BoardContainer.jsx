@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import * as actions from "../../actions/BoardActions";
 import { useParams } from "react-router-dom";
 import Board from "./Board";
+import store from "../../lib/Store";
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    boards: state.boards,
-    lists: state.lists,
-    cards: state.cards,
-    // remove these and use board only
+    board: store.getState().boards.find((board) => {
+      return board.id == ownProps.match.params.id;
+    })
   };
 };
 
@@ -26,18 +26,13 @@ class BoardContainer extends React.Component {
     
   // };
   componentDidMount() {
-    const { id } = this.props.match.params;
-    this.props.onFetchBoard(id);
+    this.props.onFetchBoard();
   }
 
   render() {
-    const board = this.props.boards.find((board) => {
-      return board.id == this.props.match.params.id;
-    }); // filter with own props
-    console.log(this.props);
     return (
       <div>
-         <Board board={board}></Board>
+         <Board board={this.props.board}></Board>
       </div>
     );
   }
