@@ -32,7 +32,7 @@ class BoardContainer extends React.Component {
   render() {
     return (
       <div>
-         <Board board={this.props.board}></Board>
+         <Board board={this.props.board || {}}></Board>
       </div>
     );
   }

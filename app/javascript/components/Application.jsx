@@ -9,6 +9,7 @@ const Application = () => {
     <div>
       <TopNav />
       <Route path="/" exact component={BoardsDashboardContainer} />
+      <Route path="/boards" exact component={BoardsDashboardContainer} />
       <Route path="/boards/:id" exact component={BoardContainer} />
     </div>
   );
