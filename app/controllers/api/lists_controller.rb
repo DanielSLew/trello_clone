@@ -5,8 +5,8 @@ class Api::ListsController < ApplicationController
     @board = Board.find_by_id(params[:board_id])
 
     if !@board 
-      @error = "Invalid board data provided"
-      render 'shared/error', status: :unprocessable_entity
+      @error = "Board not found"
+      render 'shared/error', status: :not_found
     else
       @list = @board.lists.build(list_params)
 
@@ -23,22 +23,24 @@ class Api::ListsController < ApplicationController
   end
 
   def update
+    @list = List.find_by_id(params[:id])
 
+    if !@list
+      @error = "List not found"
+      render 'shared/error', status: :not_found
+    else
+      if @list.update(title: params[:title])
+        render :create, status: :ok
+      else
+        @error = @list.errors.full_messages.join(', ')
+        render 'shared/error', status: :unprocessable_entity
+      end
+    end
   end
 
   private
 
   def list_params
     params.require(:list).permit(:title)
-  end
-
-  def set_board
-    begin
-      @board = Board.find(params[:id])
-    rescue ActiveRecord::RecordNotFound
-      @board = nil
-      @error = "Invalid board data provided"
-      render 'shared/error', status: :unprocessable_entity
-    end
   end
 end
