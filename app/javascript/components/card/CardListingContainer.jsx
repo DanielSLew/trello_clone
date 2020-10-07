@@ -4,9 +4,6 @@ import CardListing from "./CardListing";
 import store from "../../lib/Store";
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(store.getState().cards);
-  console.log(ownProps);
-
   return {
     cards: store.getState().cards.filter(card => {
       return card.list_id === ownProps.listId;

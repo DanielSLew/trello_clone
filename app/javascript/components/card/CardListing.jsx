@@ -16,9 +16,9 @@ const CardListing = ({ cards }) => {
             </p>
           </div>
           <div className="card-icons">
-            <i className="clock-icon sm-icon overdue-recent completed">Aug 4</i>
-            <i className="description-icon sm-icon"></i>
-            <i className="comment-icon sm-icon"></i>
+            {card.due_date && <i className="clock-icon sm-icon overdue-recent completed">{card.due_date}</i>}
+            {card.description && <i className="description-icon sm-icon"></i>}
+            {card.comments_count && <i className="comment-icon sm-icon"></i>}
           </div>
         </div>
       </div>
