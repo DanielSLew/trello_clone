@@ -1,5 +1,3 @@
-require 'byebug'
-
 class Api::ListsController < ApplicationController
   def create
     @board = Board.find_by_id(params[:board_id])
