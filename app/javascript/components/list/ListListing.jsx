@@ -43,7 +43,7 @@ const ListListing = ({ lists, boardId }) => {
   });
 
   return (
-    <div id="list-container" class="list-container">
+    <div id="list-container" className="list-container">
       <div id="existing-lists" className="existing-lists">
         {listItems}
       </div>

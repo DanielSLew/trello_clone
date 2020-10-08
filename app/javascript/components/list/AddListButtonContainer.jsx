@@ -58,9 +58,9 @@ class AddListButtonContainer extends React.Component {
 
     console.log(newList);
 
-    // this.props.onSubmit(newList, () => {
-    //   this.handleCloseNewListClick(new Event("click"));
-    // });
+    this.props.onSubmit(newList, () => {
+      this.handleCloseNewListClick(new Event("click"));
+    });
   };
 
   render() {
