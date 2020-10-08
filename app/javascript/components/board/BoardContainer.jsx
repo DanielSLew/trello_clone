@@ -9,22 +9,22 @@ const mapStateToProps = (state, ownProps) => {
   return {
     board: store.getState().boards.find((board) => {
       return board.id == ownProps.match.params.id;
-    })
+    }),
   };
 };
 
-const mapDispatchToProps = (dispatch, ownProps) => { //instead of id
+const mapDispatchToProps = (dispatch, ownProps) => {
+  //instead of id
   return {
     onFetchBoard: () => {
       dispatch(actions.fetchBoard(+ownProps.match.params.id));
-    }
+    },
   };
 };
 
 class BoardContainer extends React.Component {
-  // state = {
-    
-  // };
+  handleAddToList = () => {};
+
   componentDidMount() {
     this.props.onFetchBoard();
   }
@@ -32,14 +32,13 @@ class BoardContainer extends React.Component {
   render() {
     return (
       <div>
-         <Board board={this.props.board || {}}></Board>
+        <Board
+          handleAddToList={this.handleAddToList}
+          board={this.props.board || {}}
+        ></Board>
       </div>
     );
   }
 }
-// application -> BoardContainer -> connect -> 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BoardContainer);
-
+// application -> BoardContainer -> connect ->
+export default connect(mapStateToProps, mapDispatchToProps)(BoardContainer);
