@@ -10,7 +10,7 @@ const AddListButton = ({
 }) => {
   const onSubmit = (e) => {
     e.stopPropagation();
-
+    if (!state.title) return;
     handleNewListSubmit(state.title);
   };
 
