@@ -2,9 +2,9 @@ import React from "react";
 import AddListButtonContainer from "./AddListButtonContainer";
 import ListItemContainer from "./ListItemContainer";
 
-const ListListing = ({ lists, boardId }) => {
+const ListListing = ({ lists, boardId, onCardClick }) => {
   const listItems = lists.map((list) => {
-    return <ListItemContainer key={list.id} list={list} />;
+    return <ListItemContainer key={list.id} list={list} onCardClick={onCardClick} />;
   });
 
   return (
