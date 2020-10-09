@@ -7,6 +7,14 @@ export default function lists(state = [], action) {
       });
     case "CREATE_LIST_SUCCESS":
       return state.concat(action.newList);
+    case "UPDATE_LIST_SUCCESS":
+      return state.map((list)=>{
+        if (action.id === list.id){
+          return Object.assign({}, list, action.list);
+        } else {
+          return list;
+        }
+      });
     default:
       return state;
   }

@@ -2,12 +2,20 @@ import React from "react";
 import CardListingContainer from "../card/CardListingContainer";
 
 const ListItem = ({
+  state,
   list,
   visibleForm,
   handleUpdateListSubmit,
   handleEditListClick,
   handleTextChange,
 }) => {
+
+  const handleKeyPress = (e) => {
+    if (e.key == "Enter"){
+      handleUpdateListSubmit(e);
+    }
+  };
+
   return (
     <div className="list-wrapper">
       <div className="list-background">
@@ -17,16 +25,17 @@ const ListItem = ({
             {visibleForm && (
               <input
                 onBlur={handleUpdateListSubmit}
+                onKeyPress={handleKeyPress}
                 onChange={handleTextChange}
                 type="text"
                 className="list-title"
-                value={list.title}
-                autofocus="true"
+                value={state.title}
+                autoFocus={true}
               />
             )}
             {!visibleForm && (
               <p onClick={handleEditListClick} className="list-title">
-                {list.title}
+                {state.title}
               </p>
             )}
           </div>

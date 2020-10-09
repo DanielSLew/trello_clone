@@ -9,10 +9,11 @@ import * as actions from "../../actions/ListActions";
 //   };
 // };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const id = ownProps.list.id;
   return {
-    onSubmit: (newList, callback) => {
-      dispatch(actions.createList(newList));
+    onSubmit: (updatedList, callback) => {
+      dispatch(actions.updateList(id, updatedList));
       callback();
     },
   };
@@ -32,23 +33,28 @@ class ListItemContainer extends React.Component {
 
   handleEditListClick = (e) => {
     this.setState({
+      title: this.props.list.title,
       visibleForm: true,
     });
   };
 
-  handleUpdateListSubmit = (title) => {
-    e.stopPropagation();
-
-    const updatedList = { title };
-
-    // this.props.onSubmit(newList, () => {
-    //   this.handleCloseNewListClick(new Event("click"));
-    // });
+  handleUpdateListSubmit = (e) => {
+    if (this.state.title.trim() === '') {
+      this.setState({
+        title: this.props.list.title,
+      });
+      return;
+    }
+    const updatedList = { title: this.state.title };
+    this.props.onSubmit(updatedList, () => {
+      this.setState({ visibleForm: false });
+    });
   };
 
   render() {
     return (
       <ListItem
+        state={this.state}
         list={this.props.list}
         visibleForm={this.state.visibleForm}
         handleUpdateListSubmit={this.handleUpdateListSubmit}
