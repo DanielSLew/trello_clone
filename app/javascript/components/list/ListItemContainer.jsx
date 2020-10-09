@@ -33,13 +33,12 @@ class ListItemContainer extends React.Component {
 
   handleEditListClick = (e) => {
     this.setState({
-      title: this.props.list.title,
       visibleForm: true,
     });
   };
 
   handleUpdateListSubmit = (e) => {
-    if (this.state.title.trim() === '') {
+    if (this.state.title.trim() === "") {
       this.setState({
         title: this.props.list.title,
       });
