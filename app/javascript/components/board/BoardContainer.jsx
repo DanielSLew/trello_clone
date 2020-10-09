@@ -18,6 +18,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   //instead of id
   return {
     onFetchBoard: () => {
+      console.log("fetching boards")
       dispatch(actions.fetchBoard(+ownProps.match.params.id));
     },
   };

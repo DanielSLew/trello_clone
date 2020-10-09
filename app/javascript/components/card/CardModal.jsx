@@ -2,16 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 
 const CardModal = ({card}) => {
+  console.log(card);
   return(
     <div id="modal-container">
       <div class="screen"></div>
       <div id="modal">
-        {/* <Link to={`/boards/${card.board_id}`}> */}
+        <Link to={`/boards/${card.board_id}`}> 
+        {/* board_id here is undefined */}
           <i class="x-icon icon close-modal"></i>
-        {/* </Link> */}
+        </Link>
         <header>
           <i class="card-icon icon .close-modal"></i>
-          <textarea class="list-title" style={{height: '45px'}}>Cards do many cool things. Click on this card to open it and learn more...</textarea>
+          <textarea class="list-title" style={{height: '45px'}}>{card.title}</textarea>
           <p>in list <a class="link">Stuff to try (this is a list)</a><i class="sub-icon sm-icon"></i>
           </p>
         </header>
@@ -21,38 +23,25 @@ const CardModal = ({card}) => {
               <ul class="modal-details-list">
                 <li class="labels-section">
                   <h3>Labels</h3>
-                  <div class="member-container">
-                    <div class="green label colorblindable"></div>
-                  </div>
-                  <div class="member-container">
-                    <div class="yellow label colorblindable"></div>
-                  </div>
-                  <div class="member-container">
-                    <div class="orange label colorblindable"></div>
-                  </div>
-                  <div class="member-container">
-                    <div class="blue label colorblindable"></div>
-                  </div>
-                  <div class="member-container">
-                    <div class="purple label colorblindable"></div>
-                  </div>
-                  <div class="member-container">
-                    <div class="red label colorblindable"></div>
-                  </div>
+                  {card.labels && card.labels.map((label) => {
+                    return (<div class="member-container">
+                      <div class={`${label} label colorblindable`}></div>
+                    </div>) 
+                  })}
                   <div class="member-container"><i class="plus-icon sm-icon"></i>
                   </div>
                 </li>
                 <li class="due-date-section">
                   <h3>Due Date</h3>
                   <div id="dueDateDisplay" class="overdue completed">
-                    <input id="dueDateCheckbox" type="checkbox" class="checkbox" checked="" />Aug 4 at 10:42 AM <span>(past due)</span>
+                    <input id="dueDateCheckbox" type="checkbox" class="checkbox" checked="" />{card.due_date}<span>(past due)</span>
                   </div>
                 </li>
               </ul>
               <form class="description">
                 <p>Description</p>
                 <span id="description-edit" class="link">Edit</span>
-                <p class="textarea-overlay">Cards have a symbol to indicate if they contain a description.</p>
+                <p class="textarea-overlay">{card.description}</p>
                 <p id="description-edit-options" class="hidden">You have unsaved edits on this field. <span class="link">View edits</span> - <span class="link">Discard</span>
                 </p>
               </form>
