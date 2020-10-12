@@ -17,10 +17,14 @@ const mapDispatchToProps = (dispatch) => {
 class ListListingContainer extends React.Component {
   state = {
     activeListId: null,
-  }
+  };
 
   handleCardForm = (listId) => {
     this.setState({ activeListId: listId });
+  };
+
+  handleCloseCardForm = () => {
+    this.setState({ activeListId: null });
   }
 
   render() {
@@ -30,6 +34,7 @@ class ListListingContainer extends React.Component {
           handleCardForm={this.handleCardForm}
           activeListId={this.state.activeListId}
           lists={this.props.lists || []}
+          handleCloseCardForm={this.handleCloseCardForm}
         />
       </div>
     );

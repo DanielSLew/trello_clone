@@ -10,6 +10,7 @@ const ListItem = ({
   handleTextChange,
   active,
   handleCardForm,
+  handleCloseCardForm,
 }) => {
 
   const handleKeyPress = (e) => {
@@ -63,7 +64,7 @@ const ListItem = ({
               <div className="members"></div>
             </div>
             <a className="button">Add</a>
-            <i className="x-icon icon"></i>
+            <i className="x-icon icon" onClick={handleCloseCardForm}></i>
             <div className="add-options">
               <span>...</span>
             </div>

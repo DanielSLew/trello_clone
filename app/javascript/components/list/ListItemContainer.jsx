@@ -61,6 +61,7 @@ class ListItemContainer extends React.Component {
         handleTextChange={this.handleTextChange}
         active={this.props.active}
         handleCardForm={this.props.handleCardForm}
+        handleCloseCardForm={this.props.handleCloseCardForm}
       />
     );
   }
