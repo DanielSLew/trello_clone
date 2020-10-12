@@ -4,11 +4,10 @@ import * as actions from "../../actions/BoardActions";
 import * as cardActions from "../../actions/CardActions";
 import { useParams } from "react-router-dom";
 import Board from "./Board";
-import store from "../../lib/Store";
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    board: store.getState().boards.find((board) => {
+    board: state.boards.find((board) => {
       return board.id == ownProps.match.params.id;
     }),
   };
@@ -18,8 +17,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   //instead of id
   return {
     onFetchBoard: () => {
-      console.log("fetching boards")
-      dispatch(actions.fetchBoard(+ownProps.match.params.id));
+      const url = ownProps.match.url;
+      
+      if (url.match('boards')) {
+        dispatch(actions.fetchBoard(+ownProps.match.params.id));
+      }
     },
   };
 };

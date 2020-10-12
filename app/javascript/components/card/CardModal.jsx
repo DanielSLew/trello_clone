@@ -2,127 +2,179 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 
 const CardModal = ({card}) => {
-  console.log(card);
-  return(
+  console.log(card.board_id);
+  return (
     <div id="modal-container">
-      <div class="screen"></div>
+      <div className="screen"></div>
       <div id="modal">
-        <Link to={`/boards/${card.board_id}`}> 
-        {/* board_id here is undefined */}
-          <i class="x-icon icon close-modal"></i>
+        <Link to={`/boards/${card.board_id}`}>
+          <i className="x-icon icon close-modal"></i>
         </Link>
         <header>
-          <i class="card-icon icon .close-modal"></i>
-          <textarea class="list-title" style={{height: '45px'}}>{card.title}</textarea>
-          <p>in list <a class="link">Stuff to try (this is a list)</a><i class="sub-icon sm-icon"></i>
+          <i className="card-icon icon .close-modal"></i>
+          <textarea className="list-title" style={{ height: "45px" }} value={card.title} />
+          <p>
+            in list <a className="link">Stuff to try (this is a list)</a>
+            <i className="sub-icon sm-icon"></i>
           </p>
         </header>
-        <section class="modal-main">
-          <ul class="modal-outer-list">
-            <li class="details-section">
-              <ul class="modal-details-list">
-                <li class="labels-section">
+        <section className="modal-main">
+          <ul className="modal-outer-list">
+            <li className="details-section">
+              <ul className="modal-details-list">
+                <li className="labels-section">
                   <h3>Labels</h3>
-                  {card.labels && card.labels.map((label) => {
-                    return (<div class="member-container">
-                      <div class={`${label} label colorblindable`}></div>
-                    </div>) 
-                  })}
-                  <div class="member-container"><i class="plus-icon sm-icon"></i>
+                  {card.labels &&
+                    card.labels.map((label) => {
+                      return (
+                        <div className="member-container">
+                          <div
+                            className={`${label} label colorblindable`}
+                          ></div>
+                        </div>
+                      );
+                    })}
+                  <div className="member-container">
+                    <i className="plus-icon sm-icon"></i>
                   </div>
                 </li>
-                <li class="due-date-section">
+                <li className="due-date-section">
                   <h3>Due Date</h3>
-                  <div id="dueDateDisplay" class="overdue completed">
-                    <input id="dueDateCheckbox" type="checkbox" class="checkbox" checked="" />{card.due_date}<span>(past due)</span>
+                  <div id="dueDateDisplay" className="overdue completed">
+                    <input
+                      id="dueDateCheckbox"
+                      type="checkbox"
+                      className="checkbox"
+                      checked=""
+                    />
+                    {card.due_date}
+                    <span>(past due)</span>
                   </div>
                 </li>
               </ul>
-              <form class="description">
+              <form className="description">
                 <p>Description</p>
-                <span id="description-edit" class="link">Edit</span>
-                <p class="textarea-overlay">{card.description}</p>
-                <p id="description-edit-options" class="hidden">You have unsaved edits on this field. <span class="link">View edits</span> - <span class="link">Discard</span>
+                <span id="description-edit" className="link">
+                  Edit
+                </span>
+                <p className="textarea-overlay">{card.description}</p>
+                <p id="description-edit-options" className="hidden">
+                  You have unsaved edits on this field.{" "}
+                  <span className="link">View edits</span> -{" "}
+                  <span className="link">Discard</span>
                 </p>
               </form>
             </li>
-            <li class="comment-section">
-              <h2 class="comment-icon icon">Add Comment</h2>
+            <li className="comment-section">
+              <h2 className="comment-icon icon">Add Comment</h2>
               <div>
-                <div class="member-container">
-                  <div class="card-member">TP</div>
+                <div className="member-container">
+                  <div className="card-member">TP</div>
                 </div>
-                <div class="comment">
+                <div className="comment">
                   <label>
-                    <textarea required="" rows="1" placeholder="Write a comment..."></textarea>
+                    <textarea
+                      required=""
+                      rows="1"
+                      placeholder="Write a comment..."
+                    ></textarea>
                     <div>
-                      <a class="light-button card-icon sm-icon"></a>
-                      <a class="light-button smiley-icon sm-icon"></a>
-                      <a class="light-button email-icon sm-icon"></a>
-                      <a class="light-button attachment-icon sm-icon"></a>
+                      <a className="light-button card-icon sm-icon"></a>
+                      <a className="light-button smiley-icon sm-icon"></a>
+                      <a className="light-button email-icon sm-icon"></a>
+                      <a className="light-button attachment-icon sm-icon"></a>
                     </div>
                     <div>
-                      <input type="submit" class="button not-implemented" value="Save" />
+                      <input
+                        type="submit"
+                        className="button not-implemented"
+                        value="Save"
+                      />
                     </div>
                   </label>
                 </div>
               </div>
             </li>
-            <li class="activity-section">
-              <h2 class="activity-icon icon">Activity</h2>
-              <ul class="horiz-list">
-                <li class="not-implemented">Show Details</li>
+            <li className="activity-section">
+              <h2 className="activity-icon icon">Activity</h2>
+              <ul className="horiz-list">
+                <li className="not-implemented">Show Details</li>
               </ul>
-              <ul class="modal-activity-list">
+              <ul className="modal-activity-list">
                 <li>
-                  <div class="member-container">
-                    <div class="card-member">TP</div>
+                  <div className="member-container">
+                    <div className="card-member">TP</div>
                   </div>
                   <h3>Taylor Peat</h3>
-                  <div class="comment static-comment"><span>The activities are not functional.</span>
+                  <div className="comment static-comment">
+                    <span>The activities are not functional.</span>
                   </div>
-                  <small>22 minutes ago - <span class="link">Edit</span> - <span class="link">Delete</span></small>
-                  <div class="comment">
+                  <small>
+                    22 minutes ago - <span className="link">Edit</span> -{" "}
+                    <span className="link">Delete</span>
+                  </small>
+                  <div className="comment">
                     <label>
-                      <textarea required="" rows="1">The activities have not been implemented yet.</textarea>
+                      <textarea required="" rows="1">
+                        The activities have not been implemented yet.
+                      </textarea>
                       <div>
-                        <a class="light-button card-icon sm-icon"></a>
-                        <a class="light-button smiley-icon sm-icon"></a>
-                        <a class="light-button email-icon sm-icon"></a>
+                        <a className="light-button card-icon sm-icon"></a>
+                        <a className="light-button smiley-icon sm-icon"></a>
+                        <a className="light-button email-icon sm-icon"></a>
                       </div>
                       <div>
                         <p>You haven't typed anything!</p>
-                        <input type="submit" class="button not-implemented" value="Save" /><i class="x-icon icon"></i>
+                        <input
+                          type="submit"
+                          className="button not-implemented"
+                          value="Save"
+                        />
+                        <i className="x-icon icon"></i>
                       </div>
                     </label>
                   </div>
                 </li>
                 <li>
-                  <div class="member-container">
-                    <div class="card-member small-size">VR</div>
+                  <div className="member-container">
+                    <div className="card-member small-size">VR</div>
                   </div>
-                  <p><span class="member-name">Victor Reyes</span> changed the background of this board <small>yesterday at 4:53 PM</small>
+                  <p>
+                    <span className="member-name">Victor Reyes</span> changed
+                    the background of this board{" "}
+                    <small>yesterday at 4:53 PM</small>
                   </p>
                 </li>
-                <li class="activity-comment">
-                  <div class="member-container">
-                    <div class="card-member">VR</div>
+                <li className="activity-comment">
+                  <div className="member-container">
+                    <div className="card-member">VR</div>
                   </div>
                   <h3>Victor Reyes</h3>
-                  <div class="comment static-comment"><span>Example of a comment.</span>
+                  <div className="comment static-comment">
+                    <span>Example of a comment.</span>
                   </div>
-                  <small>22 minutes ago - <span class="link">Edit</span> - <span class="link">Delete</span></small>
-                  <div class="comment">
+                  <small>
+                    22 minutes ago - <span className="link">Edit</span> -{" "}
+                    <span className="link">Delete</span>
+                  </small>
+                  <div className="comment">
                     <label>
-                      <textarea required="" rows="1">Example of a comment.</textarea>
+                      <textarea required="" rows="1">
+                        Example of a comment.
+                      </textarea>
                       <div>
-                        <a class="light-button card-icon sm-icon"></a>
-                        <a class="light-button smiley-icon sm-icon"></a>
-                        <a class="light-button email-icon sm-icon"></a>
+                        <a className="light-button card-icon sm-icon"></a>
+                        <a className="light-button smiley-icon sm-icon"></a>
+                        <a className="light-button email-icon sm-icon"></a>
                       </div>
                       <div>
                         <p>You haven't typed anything!</p>
-                        <input type="submit" class="button not-implemented" value="Save" /><i class="x-icon icon"></i>
+                        <input
+                          type="submit"
+                          className="button not-implemented"
+                          value="Save"
+                        />
+                        <i className="x-icon icon"></i>
                       </div>
                     </label>
                   </div>
@@ -131,31 +183,48 @@ const CardModal = ({card}) => {
             </li>
           </ul>
         </section>
-        <aside class="modal-buttons">
+        <aside className="modal-buttons">
           <h2>Add</h2>
           <ul>
-            <li class="member-button"><i class="person-icon sm-icon"></i>Members</li>
-            <li class="label-button"><i class="label-icon sm-icon"></i>Labels</li>
-            <li class="checklist-button"><i class="checklist-icon sm-icon"></i>Checklist</li>
-            <li class="date-button not-implemented"><i class="clock-icon sm-icon"></i>Due Date</li>
-            <li class="attachment-button not-implemented"><i class="attachment-icon sm-icon"></i>Attachment</li>
+            <li className="member-button">
+              <i className="person-icon sm-icon"></i>Members
+            </li>
+            <li className="label-button">
+              <i className="label-icon sm-icon"></i>Labels
+            </li>
+            <li className="checklist-button">
+              <i className="checklist-icon sm-icon"></i>Checklist
+            </li>
+            <li className="date-button not-implemented">
+              <i className="clock-icon sm-icon"></i>Due Date
+            </li>
+            <li className="attachment-button not-implemented">
+              <i className="attachment-icon sm-icon"></i>Attachment
+            </li>
           </ul>
           <h2>Actions</h2>
           <ul>
-            <li class="move-button"><i class="forward-icon sm-icon"></i>Move</li>
-            <li class="copy-button"><i class="card-icon sm-icon"></i>Copy</li>
-            <li class="subscribe-button"><i class="sub-icon sm-icon"></i>Subscribe<i class="check-icon sm-icon"></i>
+            <li className="move-button">
+              <i className="forward-icon sm-icon"></i>Move
+            </li>
+            <li className="copy-button">
+              <i className="card-icon sm-icon"></i>Copy
+            </li>
+            <li className="subscribe-button">
+              <i className="sub-icon sm-icon"></i>Subscribe
+              <i className="check-icon sm-icon"></i>
             </li>
             <hr />
-            <li class="archive-button"><i class="file-icon sm-icon "></i>Archive</li>
+            <li className="archive-button">
+              <i className="file-icon sm-icon "></i>Archive
+            </li>
           </ul>
-          <ul class="light-list">
-            <li class="not-implemented">Share and more...</li>
+          <ul className="light-list">
+            <li className="not-implemented">Share and more...</li>
           </ul>
         </aside>
       </div>
     </div>
-
   );
 };
 

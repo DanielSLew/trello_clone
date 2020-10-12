@@ -4,6 +4,8 @@ export default function cards(state = [], action) {
       return action.board.lists.flatMap((list) => {
         return list.cards;
       });
+    case "FETCH_CARD_SUCCESS":
+      return state.concat(action.card);
     default:
       return state;
   }
