@@ -6,7 +6,7 @@ import * as actions from "../../actions/BoardActions";
 
 const mapStateToProps = (state) => {
   return {
-    lists: store.getState().lists,
+    lists: state.lists,
   };
 };
 
@@ -14,15 +14,26 @@ const mapDispatchToProps = (dispatch) => {
   return {};
 };
 
-// class ListListingContainer extends React.Component {
-//   render() {
-//     return (
-//       <div>
-//         <ListListing
-//         />
-//       </div>
-//     );
-//   }
-// }
+class ListListingContainer extends React.Component {
+  state = {
+    activeListId: null,
+  }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListListing);
+  handleCardForm = (listId) => {
+    this.setState({ activeListId: listId });
+  }
+
+  render() {
+    return (
+      <div>
+        <ListListing
+          handleCardForm={this.handleCardForm}
+          activeListId={this.state.activeListId}
+          lists={this.props.lists || []}
+        />
+      </div>
+    );
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListListingContainer);

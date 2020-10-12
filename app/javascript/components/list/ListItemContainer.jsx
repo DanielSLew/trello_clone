@@ -59,6 +59,8 @@ class ListItemContainer extends React.Component {
         handleUpdateListSubmit={this.handleUpdateListSubmit}
         handleEditListClick={this.handleEditListClick}
         handleTextChange={this.handleTextChange}
+        active={this.props.active}
+        handleCardForm={this.props.handleCardForm}
       />
     );
   }

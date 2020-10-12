@@ -8,6 +8,8 @@ const ListItem = ({
   handleUpdateListSubmit,
   handleEditListClick,
   handleTextChange,
+  active,
+  handleCardForm,
 }) => {
 
   const handleKeyPress = (e) => {
@@ -16,8 +18,14 @@ const ListItem = ({
     }
   };
 
+  const handleAddClick = () => {
+    handleCardForm(list.id);
+  };
+
+  const activeCard = (active) ? 'active-card' : '';
+  const dropdown = (active) ? 'add-dropdown-active' : '';
   return (
-    <div className="list-wrapper">
+    <div className={`list-wrapper ${dropdown}`}>
       <div className="list-background">
         <div className="list">
           <a className="more-icon sm-icon" href=""></a>
@@ -48,7 +56,7 @@ const ListItem = ({
             </div>
           </div>
           <CardListingContainer listId={list.id} />
-          <div className="add-dropdown add-bottom">
+          <div className={`add-dropdown add-bottom ${activeCard}`}>
             <div className="card">
               <div className="card-info"></div>
               <textarea name="add-card"></textarea>
@@ -60,7 +68,7 @@ const ListItem = ({
               <span>...</span>
             </div>
           </div>
-          <div className="add-card-toggle" data-position="bottom">
+          <div onClick={handleAddClick} className="add-card-toggle" data-position="bottom">
             Add a card...
           </div>
         </div>
