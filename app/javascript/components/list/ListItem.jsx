@@ -11,10 +11,11 @@ const ListItem = ({
   active,
   handleCardForm,
   handleCloseCardForm,
+  handleNewCard,
+  handleCardTitleChange,
 }) => {
-
   const handleKeyPress = (e) => {
-    if (e.key == "Enter"){
+    if (e.key == "Enter") {
       handleUpdateListSubmit(e);
     }
   };
@@ -23,8 +24,12 @@ const ListItem = ({
     handleCardForm(list.id);
   };
 
-  const activeCard = (active) ? 'active-card' : '';
-  const dropdown = (active) ? 'add-dropdown-active' : '';
+  const onNewCardClick = (e) => {
+    handleNewCard(state.newCardTitle);
+  };
+
+  const activeCard = active ? "active-card" : "";
+  const dropdown = active ? "add-dropdown-active" : "";
   return (
     <div className={`list-wrapper ${dropdown}`}>
       <div className="list-background">
@@ -60,16 +65,26 @@ const ListItem = ({
           <div className={`add-dropdown add-bottom ${activeCard}`}>
             <div className="card">
               <div className="card-info"></div>
-              <textarea name="add-card"></textarea>
+              <textarea
+                name="add-card"
+                onChange={handleCardTitleChange}
+                value={state.newCardTitle}
+              ></textarea>
               <div className="members"></div>
             </div>
-            <a className="button">Add</a>
+            <a className="button" onClick={onNewCardClick}>
+              Add
+            </a>
             <i className="x-icon icon" onClick={handleCloseCardForm}></i>
             <div className="add-options">
               <span>...</span>
             </div>
           </div>
-          <div onClick={handleAddClick} className="add-card-toggle" data-position="bottom">
+          <div
+            onClick={handleAddClick}
+            className="add-card-toggle"
+            data-position="bottom"
+          >
             Add a card...
           </div>
         </div>

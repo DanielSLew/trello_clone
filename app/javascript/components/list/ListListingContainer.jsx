@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ListListing from "./ListListing";
 import store from "../../lib/Store";
 import * as actions from "../../actions/BoardActions";
+import * as cardActions from "../../actions/CardActions";
 
 const mapStateToProps = (state) => {
   return {
@@ -11,7 +12,12 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    onCreateCard: (newCard, callback) => {
+      dispatch(cardActions.createCard(newCard));
+      callback();
+    },
+  };
 };
 
 class ListListingContainer extends React.Component {
@@ -25,7 +31,18 @@ class ListListingContainer extends React.Component {
 
   handleCloseCardForm = () => {
     this.setState({ activeListId: null });
-  }
+  };
+
+  handleNewCard = (cardTitle) => {
+    const newCard = {
+      list_id: this.state.activeListId,
+      card: {
+        title: cardTitle,
+      },
+    };
+
+    this.props.onCreateCard(newCard, this.handleCloseCardForm);
+  };
 
   render() {
     return (
@@ -35,10 +52,14 @@ class ListListingContainer extends React.Component {
           activeListId={this.state.activeListId}
           lists={this.props.lists || []}
           handleCloseCardForm={this.handleCloseCardForm}
+          handleNewCard={this.handleNewCard}
         />
       </div>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListListingContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ListListingContainer);

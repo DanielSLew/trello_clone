@@ -23,11 +23,18 @@ class ListItemContainer extends React.Component {
   state = {
     visibleForm: false,
     title: this.props.list.title,
+    newCardTitle: "",
   };
 
   handleTextChange = (e) => {
     this.setState({
       title: e.target.value,
+    });
+  };
+
+  handleCardTitleChange = (e) => {
+    this.setState({
+      newCardTitle: e.target.value,
     });
   };
 
@@ -62,6 +69,8 @@ class ListItemContainer extends React.Component {
         active={this.props.active}
         handleCardForm={this.props.handleCardForm}
         handleCloseCardForm={this.props.handleCloseCardForm}
+        handleNewCard={this.props.handleNewCard}
+        handleCardTitleChange={this.handleCardTitleChange}
       />
     );
   }

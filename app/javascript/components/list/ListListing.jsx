@@ -9,6 +9,7 @@ const ListListing = ({
   handleCardForm,
   activeListId,
   handleCloseCardForm,
+  handleNewCard,
 }) => {
   const listItems = lists.map((list) => {
     return (
@@ -19,6 +20,7 @@ const ListListing = ({
         active={activeListId === list.id}
         handleCardForm={handleCardForm}
         handleCloseCardForm={handleCloseCardForm}
+        handleNewCard={handleNewCard}
       />
     );
   });

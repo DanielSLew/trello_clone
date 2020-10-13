@@ -48,7 +48,7 @@ const apiClient = {
       .catch(logError);
   },
   updateList: function(id, list, callback) {
-    console.log(list, routes.UPDATE_LIST_URL)
+    console.log(list, routes.UPDATE_LIST_URL);
     return axios
       .put(routes.UPDATE_LIST_URL + "/" + String(id), list)
       .then(unwrapData)
@@ -57,7 +57,14 @@ const apiClient = {
   },
   getCard: function(cardId, callback) {
     return axios
-      .get(routes.CARD_INDEX_URL  + "/" + String(cardId))
+      .get(routes.CARD_INDEX_URL + "/" + String(cardId))
+      .then(unwrapData)
+      .then(callback)
+      .catch(logError);
+  },
+  createCard: function(card, callback) {
+    return axios
+      .post(routes.CREATE_CARD_URL, card)
       .then(unwrapData)
       .then(callback)
       .catch(logError);
