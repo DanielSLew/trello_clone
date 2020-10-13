@@ -33,6 +33,7 @@ class CardModalContainer extends React.Component {
     visibleForm: false,
     title: "",
     description: "",
+    archived: null,
     boardLoaded: false,
     editDescription: false,
   };
@@ -47,7 +48,8 @@ class CardModalContainer extends React.Component {
       this.setState({
         boardLoaded: true,
         title: this.props.card.title,
-        description: this.props.card.description,
+        description: this.props.card.description || "",
+        archived: this.props.card.archived,
       });
     }
   }
@@ -78,22 +80,22 @@ class CardModalContainer extends React.Component {
     });
   };
 
-  handleUpdateCardSubmit = (e) => {
-    if (
-      this.state.title.trim() === "" ||
-      this.state.description.trim() === ""
-    ) {
+  handleUpdateCardSubmit = (e, options = {}) => {
+    if (this.state.title.trim() === "") {
       this.setState({
         title: this.props.card.title,
-        description: this.props.card.description,
       });
       return;
     }
+
+    const archived =
+      options.archived === undefined ? this.state.archived : options.archived;
 
     const updatedCard = {
       card: {
         title: this.state.title,
         description: this.state.description,
+        archived,
       },
     };
 

@@ -11,10 +11,18 @@ const CardModal = ({
   state,
 }) => {
   const cardTitle = state.visibleForm ? state.title : card.title;
-  console.log(state, card);
   const cardDescription = state.editDescription
     ? state.description
     : card.description;
+
+  const archiveCard = (e) => {
+    handleUpdateCardSubmit(e, { archived: true });
+  };
+
+  const unarchiveCard = (e) => {
+    handleUpdateCardSubmit(e, { archived: false });
+  };
+
   return (
     <div id="modal-container">
       <div className="screen"></div>
@@ -22,6 +30,11 @@ const CardModal = ({
         <Link to={`/boards/${card.board_id}`}>
           <i className="x-icon icon close-modal"></i>
         </Link>
+        {card.archived && (
+          <div class="archived-banner">
+            <i class="file-icon icon"></i>This card is archived.
+          </div>
+        )}
         <header>
           <i className="card-icon icon .close-modal"></i>
           <textarea
@@ -267,9 +280,22 @@ const CardModal = ({
               <i className="check-icon sm-icon"></i>
             </li>
             <hr />
-            <li className="archive-button">
-              <i className="file-icon sm-icon "></i>Archive
-            </li>
+            {!card.archived && (
+              <li onClick={archiveCard} className="archive-button">
+                <i className="file-icon sm-icon "></i>
+                Archive
+              </li>
+            )}
+            {card.archived && (
+              <>
+                <li onClick={unarchiveCard} className="unarchive-button">
+                  <i className="send-icon sm-icon"></i>Send to board
+                </li>
+                <li className="red-button">
+                  <i className="minus-icon sm-icon"></i>Delete
+                </li>
+              </>
+            )}
           </ul>
           <ul className="light-list">
             <li className="not-implemented">Share and more...</li>
