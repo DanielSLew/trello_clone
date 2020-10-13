@@ -6,10 +6,15 @@ const CardModal = ({
   handleTextChange,
   handleUpdateCardSubmit,
   handleEditCardTitleClick,
-  editingTitle,
-  title,
+  handleEditDescriptionClick,
+  handleCloseEditDescription,
+  state,
 }) => {
-  const cardTitle = editingTitle ? title : card.title;
+  const cardTitle = state.visibleForm ? state.title : card.title;
+  console.log(state, card);
+  const cardDescription = state.editDescription
+    ? state.description
+    : card.description;
   return (
     <div id="modal-container">
       <div className="screen"></div>
@@ -20,6 +25,7 @@ const CardModal = ({
         <header>
           <i className="card-icon icon .close-modal"></i>
           <textarea
+            name="title"
             className="list-title"
             style={{ height: "45px" }}
             value={cardTitle}
@@ -66,18 +72,50 @@ const CardModal = ({
                   </div>
                 </li>
               </ul>
-              <form className="description">
-                <p>Description</p>
-                <span id="description-edit" className="link">
-                  Edit
-                </span>
-                <p className="textarea-overlay">{card.description}</p>
-                <p id="description-edit-options" className="hidden">
-                  You have unsaved edits on this field.{" "}
-                  <span className="link">View edits</span> -{" "}
-                  <span className="link">Discard</span>
-                </p>
-              </form>
+              {!state.editDescription && (
+                <form className="description">
+                  <p>Description</p>
+                  <span
+                    onClick={handleEditDescriptionClick}
+                    id="description-edit"
+                    className="link"
+                  >
+                    Edit
+                  </span>
+                  <p className="textarea-overlay">{card.description}</p>
+                  <p id="description-edit-options" className="hidden">
+                    You have unsaved edits on this field.{" "}
+                    <span className="link">View edits</span> -{" "}
+                    <span className="link">Discard</span>
+                  </p>
+                </form>
+              )}
+              {state.editDescription && (
+                <form className="description">
+                  <p>Description</p>
+                  <textarea
+                    name="description"
+                    class="textarea-toggle"
+                    rows="1"
+                    autofocus
+                    value={cardDescription}
+                    onChange={handleTextChange}
+                  />
+                  <div>
+                    <div
+                      className="button"
+                      value="Save"
+                      onClick={handleUpdateCardSubmit}
+                    >
+                      Save
+                    </div>
+                    <i
+                      className="x-icon icon"
+                      onClick={handleCloseEditDescription}
+                    ></i>
+                  </div>
+                </form>
+              )}
             </li>
             <li className="comment-section">
               <h2 className="comment-icon icon">Add Comment</h2>

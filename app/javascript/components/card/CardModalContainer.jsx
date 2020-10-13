@@ -6,9 +6,10 @@ import * as boardActions from "../../actions/BoardActions";
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    card: state.cards.find((card) => {
-      return card.id === +ownProps.match.params.id;
-    }),
+    card:
+      state.cards.find((card) => {
+        return card.id === +ownProps.match.params.id;
+      }) || {},
   };
 };
 
@@ -30,8 +31,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 class CardModalContainer extends React.Component {
   state = {
     visibleForm: false,
-    title: (this.props.card || {}).title,
+    title: "",
+    description: "",
     boardLoaded: false,
+    editDescription: false,
   };
 
   componentDidMount() {
@@ -41,14 +44,17 @@ class CardModalContainer extends React.Component {
   componentDidUpdate() {
     if (this.props.card && !this.state.boardLoaded) {
       this.props.onFetchBoard(this.props.card.board_id);
-      this.setState({ boardLoaded: true });
+      this.setState({
+        boardLoaded: true,
+        title: this.props.card.title,
+        description: this.props.card.description,
+      });
     }
   }
 
   handleTextChange = (e) => {
-    console.log(e.target.value);
     this.setState({
-      title: e.target.value,
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -59,10 +65,27 @@ class CardModalContainer extends React.Component {
     });
   };
 
+  handleEditDescriptionClick = (e) => {
+    this.setState({
+      editDescription: true,
+    });
+  };
+
+  handleCloseEditDescription = (e) => {
+    this.setState({
+      editDescription: false,
+      description: this.props.card.description,
+    });
+  };
+
   handleUpdateCardSubmit = (e) => {
-    if (this.state.title.trim() === "") {
+    if (
+      this.state.title.trim() === "" ||
+      this.state.description.trim() === ""
+    ) {
       this.setState({
         title: this.props.card.title,
+        description: this.props.card.description,
       });
       return;
     }
@@ -70,12 +93,14 @@ class CardModalContainer extends React.Component {
     const updatedCard = {
       card: {
         title: this.state.title,
+        description: this.state.description,
       },
     };
 
     this.props.onSubmit(this.props.card.id, updatedCard, () => {
       this.setState({
         visibleForm: false,
+        editDescription: false,
       });
     });
   };
@@ -88,8 +113,9 @@ class CardModalContainer extends React.Component {
           handleTextChange={this.handleTextChange}
           handleUpdateCardSubmit={this.handleUpdateCardSubmit}
           handleEditCardTitleClick={this.handleEditCardTitleClick}
-          title={this.state.title}
-          editingTitle={this.state.visibleForm}
+          handleEditDescriptionClick={this.handleEditDescriptionClick}
+          handleCloseEditDescription={this.handleCloseEditDescription}
+          state={this.state}
         ></CardModal>
       </div>
     );
