@@ -1,8 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
-const CardModal = ({card}) => {
-  console.log(card.board_id);
+const CardModal = ({
+  card,
+  handleTextChange,
+  handleUpdateCardSubmit,
+  handleEditCardTitleClick,
+  editingTitle,
+  title,
+}) => {
+  const cardTitle = editingTitle ? title : card.title;
   return (
     <div id="modal-container">
       <div className="screen"></div>
@@ -12,7 +19,14 @@ const CardModal = ({card}) => {
         </Link>
         <header>
           <i className="card-icon icon .close-modal"></i>
-          <textarea className="list-title" style={{ height: "45px" }} value={card.title} />
+          <textarea
+            className="list-title"
+            style={{ height: "45px" }}
+            value={cardTitle}
+            onChange={handleTextChange}
+            onBlur={handleUpdateCardSubmit}
+            onClick={handleEditCardTitleClick}
+          />
           <p>
             in list <a className="link">Stuff to try (this is a list)</a>
             <i className="sub-icon sm-icon"></i>

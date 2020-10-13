@@ -48,7 +48,6 @@ const apiClient = {
       .catch(logError);
   },
   updateList: function(id, list, callback) {
-    console.log(list, routes.UPDATE_LIST_URL);
     return axios
       .put(routes.UPDATE_LIST_URL + "/" + String(id), list)
       .then(unwrapData)
@@ -65,6 +64,13 @@ const apiClient = {
   createCard: function(card, callback) {
     return axios
       .post(routes.CREATE_CARD_URL, card)
+      .then(unwrapData)
+      .then(callback)
+      .catch(logError);
+  },
+  updateCard: function(id, card, callback) {
+    return axios
+      .put(routes.UPDATE_CARD_URL + "/" + String(id), card)
       .then(unwrapData)
       .then(callback)
       .catch(logError);

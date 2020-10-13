@@ -28,7 +28,6 @@ export function createList(list, callback) {
   };
 }
 
-
 export function updateList(id, list, callback) {
   return function(dispatch) {
     dispatch(updateListRequest());
