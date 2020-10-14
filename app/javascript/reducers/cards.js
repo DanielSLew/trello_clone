@@ -24,6 +24,10 @@ export default function cards(state = [], action) {
           return card;
         }
       });
+    case "DELETE_CARD_SUCCESS":
+      return state.filter((card) => {
+        return card.id !== action.id
+      });
     default:
       return state;
   }

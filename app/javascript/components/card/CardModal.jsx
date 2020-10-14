@@ -8,6 +8,9 @@ const CardModal = ({
   handleEditCardTitleClick,
   handleEditDescriptionClick,
   handleCloseEditDescription,
+  handleDeleteClick,
+  toggleLabelPopover,
+  toggleLabel,
   state,
 }) => {
   const cardTitle = state.visibleForm ? state.title : card.title;
@@ -22,6 +25,23 @@ const CardModal = ({
   const unarchiveCard = (e) => {
     handleUpdateCardSubmit(e, { archived: false });
   };
+
+  const onDeleteClick = (e) => {
+    handleDeleteClick(card.id);
+  }
+
+  const handleLabelPopover = (e) => {
+    e.preventDefault();
+    toggleLabelPopover();
+  }
+
+  const labels = ['green', 'yellow', 'orange', 'red', 'purple', 'blue'];
+
+  const onLabelClick = (e) => {
+    const label = labels[e.target.getAttribute("data-id")];
+    console.log(label);
+    toggleLabel(label);
+  }
 
   return (
     <div id="modal-container">
@@ -67,10 +87,40 @@ const CardModal = ({
                         </div>
                       );
                     })}
-                  <div className="member-container">
+                  <div className="member-container" onClick={handleLabelPopover}>
                     <i className="plus-icon sm-icon"></i>
                   </div>
                 </li>
+                {state.labelsPopover && 
+                  <div class="popover labels">
+                    <div id="add-options-labels-dropdown">
+                      <header>
+                        <span>Labels</span>
+                        <a href="#" class="icon-sm icon-close" onClick={handleLabelPopover}></a>
+                      </header>
+                      <div class="content">
+                        <input class="dropdown-input" placeholder="Search labels..." type="text" />
+                        <div class="labels-search-results">
+                          <ul class="label-list">
+                            {labels.map((label, idx) => {
+                              const checkedStatus = card.labels.includes(label) ? <i class="check-icon sm-icon"></i> : null;
+                              return (<li>
+                                <div onClick={onLabelClick} class={`${label} colorblindable`} data-id={idx}>{checkedStatus}</div>
+                                <div class={`label-background ${label}`}></div>
+                                <div class="label-background-overlay"></div><i class="edit-icon icon not-implemented"></i>
+                            </li>)
+                            })}
+                          </ul>
+                          <ul class="light-list">
+                            <li class="not-implemented">Create a new label</li>
+                            <hr />
+                            <li class="toggleColorblind">Enable color blind friendly mode.</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
                 <li className="due-date-section">
                   <h3>Due Date</h3>
                   <div id="dueDateDisplay" className="overdue completed">
@@ -291,7 +341,7 @@ const CardModal = ({
                 <li onClick={unarchiveCard} className="unarchive-button">
                   <i className="send-icon sm-icon"></i>Send to board
                 </li>
-                <li className="red-button">
+                <li className="red-button" onClick={onDeleteClick}>
                   <i className="minus-icon sm-icon"></i>Delete
                 </li>
               </>

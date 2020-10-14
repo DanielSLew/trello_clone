@@ -25,6 +25,14 @@ export function updateCardSuccess(id, card) {
   return { type: types.UPDATE_CARD_SUCCESS, id, card };
 }
 
+export function deleteCardRequest() {
+  return { type: types.DELETE_CARD_REQUEST };
+}
+
+export function deleteCardSuccess(id) {
+  return { type: types.DELETE_CARD_SUCCESS, id };
+}
+
 export function fetchCard(cardId) {
   return function(dispatch) {
     dispatch(fetchCardRequest());
@@ -54,6 +62,15 @@ export function updateCard(id, card, callback) {
       if (callback) {
         callback(updatedCard);
       }
+    });
+  };
+}
+
+export function deleteCard(id) {
+  return function(dispatch) {
+    dispatch(deleteCardRequest());
+    apiClient.deleteCard(id, (deleteCard) => {
+      dispatch(deleteCardSuccess(id));
     });
   };
 }

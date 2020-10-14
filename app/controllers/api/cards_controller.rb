@@ -47,9 +47,25 @@ class Api::CardsController < ApplicationController
     end
   end
 
+  def destroy
+    @card = Card.find_by_id(params[:id])
+
+    if !@card
+      @error = "Card not found"
+      render 'shared/error', status: :not_found
+    else
+      if @card.destroy
+        render :destroy, status: :ok
+      else
+        @error = @card.errors.full_messages.join(', ')
+        render 'shared/error', status: :unprocessable_entity
+      end
+    end
+  end
+
   private
 
   def card_params
-    params.require(:card).permit(:title, :list_id, :description, :archived, :due_date, :completed, :labels)
+    params.require(:card).permit(:title, :list_id, :description, :archived, :due_date, :completed, :labels => [])
   end
 end

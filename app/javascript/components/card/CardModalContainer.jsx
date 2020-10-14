@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import CardModal from "./CardModal";
 import * as cardActions from "../../actions/CardActions";
 import * as boardActions from "../../actions/BoardActions";
+import { Redirect } from "react-router-dom";
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -25,6 +26,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(cardActions.updateCard(id, updatedCard));
       callback();
     },
+    onDeleteCard: (id, callback) => {
+      dispatch(cardActions.deleteCard(id));
+      callback();
+    },
   };
 };
 
@@ -34,8 +39,11 @@ class CardModalContainer extends React.Component {
     title: "",
     description: "",
     archived: null,
+    labels: [],
     boardLoaded: false,
     editDescription: false,
+    redirect: false,
+    labelsPopover: false,
   };
 
   componentDidMount() {
@@ -50,6 +58,7 @@ class CardModalContainer extends React.Component {
         title: this.props.card.title,
         description: this.props.card.description || "",
         archived: this.props.card.archived,
+        labels: this.props.card.labels,
       });
     }
   }
@@ -107,7 +116,44 @@ class CardModalContainer extends React.Component {
     });
   };
 
+  handleDeleteClick = (id) => {
+    this.props.onDeleteCard(id, () => {
+      this.setState({ redirect: true });
+    });
+  }
+
+  toggleLabelPopover = () => {
+    this.setState((prevState) => {
+      return { labelsPopover: !prevState.labelsPopover }
+    });
+  }
+
+  toggleLabel = (label) => {
+    let newLabels = this.props.card.labels.slice();
+    if (newLabels.includes(label)){
+      newLabels = newLabels.filter((currLabel) => {
+        return currLabel !== label;
+      })
+    } else {
+      newLabels.push(label);
+    }
+
+    console.log(newLabels);
+    
+    const updatedCard = {
+      card: {
+        labels: newLabels
+      },
+    };
+    this.props.onSubmit(this.props.card.id, updatedCard, () => {
+    })
+  }
+
   render() {
+    if (this.state.redirect){
+      return <Redirect to={`/boards/${this.props.card.board_id}`}/>
+    }
+
     return (
       <div>
         <CardModal
@@ -117,6 +163,9 @@ class CardModalContainer extends React.Component {
           handleEditCardTitleClick={this.handleEditCardTitleClick}
           handleEditDescriptionClick={this.handleEditDescriptionClick}
           handleCloseEditDescription={this.handleCloseEditDescription}
+          handleDeleteClick={this.handleDeleteClick}
+          toggleLabelPopover={this.toggleLabelPopover}
+          toggleLabel={this.toggleLabel}
           state={this.state}
         ></CardModal>
       </div>
