@@ -44,6 +44,7 @@ class CardModalContainer extends React.Component {
     editDescription: false,
     redirect: false,
     labelsPopover: false,
+    dueDatePopover: false,
   };
 
   componentDidMount() {
@@ -120,38 +121,50 @@ class CardModalContainer extends React.Component {
     this.props.onDeleteCard(id, () => {
       this.setState({ redirect: true });
     });
-  }
+  };
 
   toggleLabelPopover = () => {
     this.setState((prevState) => {
-      return { labelsPopover: !prevState.labelsPopover }
+      return { labelsPopover: !prevState.labelsPopover };
     });
-  }
+  };
+
+  toggleDueDatePopover = () => {
+    this.setState((prevState) => {
+      return { dueDatePopover: !prevState.dueDatePopover };
+    });
+  };
 
   toggleLabel = (label) => {
     let newLabels = this.props.card.labels.slice();
-    if (newLabels.includes(label)){
+    if (newLabels.includes(label)) {
       newLabels = newLabels.filter((currLabel) => {
         return currLabel !== label;
-      })
+      });
     } else {
       newLabels.push(label);
     }
 
-    console.log(newLabels);
-    
     const updatedCard = {
       card: {
-        labels: newLabels
+        labels: newLabels,
       },
     };
-    this.props.onSubmit(this.props.card.id, updatedCard, () => {
-    })
-  }
+    this.props.onSubmit(this.props.card.id, updatedCard, () => {});
+  };
+
+  updateDate = (dueDate) => {
+    const updatedCard = {
+      card: {
+        due_date: dueDate,
+      },
+    };
+    this.props.onSubmit(this.props.card.id, updatedCard, () => {});
+  };
 
   render() {
-    if (this.state.redirect){
-      return <Redirect to={`/boards/${this.props.card.board_id}`}/>
+    if (this.state.redirect) {
+      return <Redirect to={`/boards/${this.props.card.board_id}`} />;
     }
 
     return (
@@ -166,6 +179,8 @@ class CardModalContainer extends React.Component {
           handleDeleteClick={this.handleDeleteClick}
           toggleLabelPopover={this.toggleLabelPopover}
           toggleLabel={this.toggleLabel}
+          toggleDueDatePopover={this.toggleDueDatePopover}
+          updateDate={this.updateDate}
           state={this.state}
         ></CardModal>
       </div>

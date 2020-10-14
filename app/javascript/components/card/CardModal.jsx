@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import DueDate from "./DueDate";
 
 const CardModal = ({
   card,
@@ -11,6 +12,8 @@ const CardModal = ({
   handleDeleteClick,
   toggleLabelPopover,
   toggleLabel,
+  toggleDueDatePopover,
+  updateDate,
   state,
 }) => {
   const cardTitle = state.visibleForm ? state.title : card.title;
@@ -28,20 +31,20 @@ const CardModal = ({
 
   const onDeleteClick = (e) => {
     handleDeleteClick(card.id);
-  }
+  };
 
   const handleLabelPopover = (e) => {
     e.preventDefault();
     toggleLabelPopover();
-  }
+  };
 
-  const labels = ['green', 'yellow', 'orange', 'red', 'purple', 'blue'];
+  const labels = ["green", "yellow", "orange", "red", "purple", "blue"];
 
   const onLabelClick = (e) => {
     const label = labels[e.target.getAttribute("data-id")];
     console.log(label);
     toggleLabel(label);
-  }
+  };
 
   return (
     <div id="modal-container">
@@ -87,40 +90,68 @@ const CardModal = ({
                         </div>
                       );
                     })}
-                  <div className="member-container" onClick={handleLabelPopover}>
+                  <div
+                    className="member-container"
+                    onClick={handleLabelPopover}
+                  >
                     <i className="plus-icon sm-icon"></i>
                   </div>
                 </li>
-                {state.labelsPopover && 
+                {state.labelsPopover && (
                   <div class="popover labels">
                     <div id="add-options-labels-dropdown">
                       <header>
                         <span>Labels</span>
-                        <a href="#" class="icon-sm icon-close" onClick={handleLabelPopover}></a>
+                        <a
+                          href="#"
+                          class="icon-sm icon-close"
+                          onClick={handleLabelPopover}
+                        ></a>
                       </header>
                       <div class="content">
-                        <input class="dropdown-input" placeholder="Search labels..." type="text" />
+                        <input
+                          class="dropdown-input"
+                          placeholder="Search labels..."
+                          type="text"
+                        />
                         <div class="labels-search-results">
                           <ul class="label-list">
                             {labels.map((label, idx) => {
-                              const checkedStatus = card.labels.includes(label) ? <i class="check-icon sm-icon"></i> : null;
-                              return (<li>
-                                <div onClick={onLabelClick} class={`${label} colorblindable`} data-id={idx}>{checkedStatus}</div>
-                                <div class={`label-background ${label}`}></div>
-                                <div class="label-background-overlay"></div><i class="edit-icon icon not-implemented"></i>
-                            </li>)
+                              const checkedStatus = card.labels.includes(
+                                label
+                              ) ? (
+                                <i class="check-icon sm-icon"></i>
+                              ) : null;
+                              return (
+                                <li>
+                                  <div
+                                    onClick={onLabelClick}
+                                    class={`${label} colorblindable`}
+                                    data-id={idx}
+                                  >
+                                    {checkedStatus}
+                                  </div>
+                                  <div
+                                    class={`label-background ${label}`}
+                                  ></div>
+                                  <div class="label-background-overlay"></div>
+                                  <i class="edit-icon icon not-implemented"></i>
+                                </li>
+                              );
                             })}
                           </ul>
                           <ul class="light-list">
                             <li class="not-implemented">Create a new label</li>
                             <hr />
-                            <li class="toggleColorblind">Enable color blind friendly mode.</li>
+                            <li class="toggleColorblind">
+                              Enable color blind friendly mode.
+                            </li>
                           </ul>
                         </div>
                       </div>
                     </div>
                   </div>
-                }
+                )}
                 <li className="due-date-section">
                   <h3>Due Date</h3>
                   <div id="dueDateDisplay" className="overdue completed">
@@ -135,6 +166,13 @@ const CardModal = ({
                   </div>
                 </li>
               </ul>
+              {state.dueDatePopover && (
+                <DueDate
+                  toggleDueDatePopover={toggleDueDatePopover}
+                  dueDate={card.due_date}
+                  updateDate={updateDate}
+                />
+              )}
               {!state.editDescription && (
                 <form className="description">
                   <p>Description</p>
@@ -310,7 +348,10 @@ const CardModal = ({
             <li className="checklist-button">
               <i className="checklist-icon sm-icon"></i>Checklist
             </li>
-            <li className="date-button not-implemented">
+            <li
+              onClick={toggleDueDatePopover}
+              className="date-button not-implemented"
+            >
               <i className="clock-icon sm-icon"></i>Due Date
             </li>
             <li className="attachment-button not-implemented">
