@@ -6,11 +6,14 @@ import * as boardActions from "../../actions/BoardActions";
 import { Redirect } from "react-router-dom";
 
 const mapStateToProps = (state, ownProps) => {
+  const card =
+    state.cards.find((card) => {
+      return card.id === +ownProps.match.params.id;
+    }) || {};
+
   return {
-    card:
-      state.cards.find((card) => {
-        return card.id === +ownProps.match.params.id;
-      }) || {},
+    card: card,
+    comments: state.comments || [],
   };
 };
 
@@ -28,6 +31,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onDeleteCard: (id, callback) => {
       dispatch(cardActions.deleteCard(id));
+      callback();
+    },
+    onCreateComment: (newComment, callback) => {
+      dispatch(cardActions.createComment(newComment));
       callback();
     },
   };
@@ -123,6 +130,16 @@ class CardModalContainer extends React.Component {
     });
   };
 
+  handleNewComment = (commentBody) => {
+    const id = this.props.card.id;
+    const newComment = {
+      card_id: id,
+      comment: { text: commentBody },
+    };
+
+    this.props.onCreateComment(newComment, () => {});
+  };
+
   toggleLabelPopover = () => {
     this.setState((prevState) => {
       return { labelsPopover: !prevState.labelsPopover };
@@ -171,12 +188,14 @@ class CardModalContainer extends React.Component {
       <div>
         <CardModal
           card={this.props.card || {}}
+          comments={this.props.comments}
           handleTextChange={this.handleTextChange}
           handleUpdateCardSubmit={this.handleUpdateCardSubmit}
           handleEditCardTitleClick={this.handleEditCardTitleClick}
           handleEditDescriptionClick={this.handleEditDescriptionClick}
           handleCloseEditDescription={this.handleCloseEditDescription}
           handleDeleteClick={this.handleDeleteClick}
+          handleNewComment={this.handleNewComment}
           toggleLabelPopover={this.toggleLabelPopover}
           toggleLabel={this.toggleLabel}
           toggleDueDatePopover={this.toggleDueDatePopover}

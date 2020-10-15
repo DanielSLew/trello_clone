@@ -7,7 +7,8 @@ export default function cards(state = [], action) {
     case "FETCH_CARD_SUCCESS":
       const cards = state.map((card) => {
         if (card.id === action.card.id) {
-          return action.card;
+          const { comments, ...cardWithoutComments } = action.card;
+          return cardWithoutComments;
         } else {
           return card;
         }
@@ -26,7 +27,7 @@ export default function cards(state = [], action) {
       });
     case "DELETE_CARD_SUCCESS":
       return state.filter((card) => {
-        return card.id !== action.id
+        return card.id !== action.id;
       });
     default:
       return state;

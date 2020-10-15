@@ -33,6 +33,14 @@ export function deleteCardSuccess(id) {
   return { type: types.DELETE_CARD_SUCCESS, id };
 }
 
+export function createCommentRequest() {
+  return { type: types.CREATE_COMMENT_REQUEST };
+}
+
+export function createCommentSuccess(comment) {
+  return { type: types.CREATE_COMMENT_SUCCESS, comment };
+}
+
 export function fetchCard(cardId) {
   return function(dispatch) {
     dispatch(fetchCardRequest());
@@ -71,6 +79,19 @@ export function deleteCard(id) {
     dispatch(deleteCardRequest());
     apiClient.deleteCard(id, (deleteCard) => {
       dispatch(deleteCardSuccess(id));
+    });
+  };
+}
+
+export function createComment(newComment, callback) {
+  return function(dispatch) {
+    dispatch(createCommentRequest());
+    apiClient.createComment(newComment, (comment) => {
+      dispatch(createCommentSuccess(comment));
+
+      if (callback) {
+        callback(comment);
+      }
     });
   };
 }
