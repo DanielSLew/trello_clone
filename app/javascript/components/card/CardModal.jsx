@@ -223,7 +223,7 @@ const CardModal = ({
               )}
             </li>
             <CommentSection handleNewComment={handleNewComment} />
-            <ActivityList comments={comments} />
+            <ActivityList comments={comments} actions={card.actions} />
           </ul>
         </section>
         <aside className="modal-buttons">
