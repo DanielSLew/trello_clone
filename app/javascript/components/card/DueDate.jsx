@@ -3,10 +3,6 @@ import Pikaday from "pikaday";
 import moment from "moment";
 
 class DueDate extends React.Component {
-  state = {
-    date: null,
-  };
-
   defaultMoment = () => {
     if (this.props.dueDate) {
       return moment(this.props.dueDate);
@@ -80,16 +76,17 @@ class DueDate extends React.Component {
 
   updateDate = (e) => {
     e.preventDefault();
-    this.props.updateDate(this.state.dueDate);
+    let date = document.querySelector(".datepicker-select-date input").value;
+    let time = document.querySelector(".datepicker-select-time input").value;
+    const datetime = moment(`${date} ${time}`, "M/D/YYYY h:mm A").toISOString();
+
+    this.props.updateDate(datetime);
+    this.props.toggleDueDatePopover();
   };
 
-  handleChangeDate = (e) => {
-    let date = e.target.querySelector(".datepicker-select-date input").value;
-    let time = e.target.querySelector(".datepicker-select-time input").value;
-    const datetime = moment(`${date} ${time}`, "M/D/YYYY h:mm A").toISOString();
-    this.setState({
-      date: datetime,
-    });
+  removeDueDate = () => {
+    this.props.updateDate("");
+    this.props.toggleDueDatePopover();
   };
 
   render() {
@@ -111,7 +108,6 @@ class DueDate extends React.Component {
                     autofocus
                     ref="dateInput"
                     defaultValue={this.defaultMoment().format("M/D/yyyy")}
-                    onChange={this.handleChangeDate}
                   />
                 </label>
               </div>
@@ -121,7 +117,7 @@ class DueDate extends React.Component {
                   <input
                     type="text"
                     placeholder="Enter time"
-                    value="12:00 PM"
+                    defaultValue={this.defaultMoment().format("h:mm A")}
                   />
                 </label>
               </div>
@@ -130,7 +126,11 @@ class DueDate extends React.Component {
             <button class="button" type="submit">
               Save
             </button>
-            <button class="button red-button" type="reset">
+            <button
+              class="button red-button"
+              type="reset"
+              onClick={this.removeDueDate}
+            >
               Remove
             </button>
           </form>

@@ -64,7 +64,7 @@ const CardModal = ({
             name="title"
             className="list-title"
             style={{ height: "45px" }}
-            value={cardTitle}
+            defaultValue={cardTitle}
             onChange={handleTextChange}
             onBlur={handleUpdateCardSubmit}
             onClick={handleEditCardTitleClick}
@@ -199,7 +199,7 @@ const CardModal = ({
                     class="textarea-toggle"
                     rows="1"
                     autofocus
-                    value={cardDescription}
+                    defaultValue={cardDescription}
                     onChange={handleTextChange}
                   />
                   <div>
