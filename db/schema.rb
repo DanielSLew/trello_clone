@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_13_175609) do
+ActiveRecord::Schema.define(version: 2020_10_15_173156) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "actions", force: :cascade do |t|
+    t.string "description"
+    t.bigint "card_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["card_id"], name: "index_actions_on_card_id"
+  end
 
   create_table "boards", force: :cascade do |t|
     t.string "title"
@@ -49,6 +57,7 @@ ActiveRecord::Schema.define(version: 2020_10_13_175609) do
     t.index ["board_id"], name: "index_lists_on_board_id"
   end
 
+  add_foreign_key "actions", "cards"
   add_foreign_key "cards", "lists"
   add_foreign_key "comments", "cards"
   add_foreign_key "lists", "boards"
