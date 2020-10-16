@@ -2,15 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import MoveCardPopover from "./MoveCardPopover";
 import * as actions from "../../actions/BoardActions";
+import * as cardActions from "../../actions/CardActions";
 import store from "../../lib/Store";
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    // boards: state.boards || [],
-    // lists:
-    //   state.lists.filter((list) => {
-    //     return ownProps.card.board_id === list.board_id;
-    //   }) || [],
     state,
   };
 };
@@ -20,18 +16,23 @@ const mapDispatchToProps = (dispatch) => {
     onFetchBoards: () => {
       dispatch(actions.fetchBoards());
     },
-    onFetchBoard: (boardId) => {
+    onFetchBoard: (boardId, callback) => {
       // if (url.match("boards")) {
       dispatch(actions.fetchBoard(boardId));
+      callback();
       // }
+    },
+    onSubmit: (id, updatedCard, callback) => {
+      dispatch(cardActions.updateCard(id, updatedCard));
+      callback();
     },
   };
 };
 
 class MoveCardPopoverContainer extends React.Component {
   state = {
-    boardId: this.props.state.card.board_id,
-    listId: this.props.state.card.list_id,
+    boardId: this.props.card.board_id,
+    listId: this.props.card.list_id,
   };
 
   componentDidMount() {
@@ -40,10 +41,23 @@ class MoveCardPopoverContainer extends React.Component {
 
   handleChangedSelected = (type, id) => {
     if (type === "board") {
-      this.setState({ boardId: id });
+      this.props.onFetchBoard(id, () => {
+        this.setState({ boardId: id });
+      });
     } else {
       this.setState({ listId: id });
     }
+  };
+
+  handleMoveCard = () => {
+    const updatedCard = {
+      card: {
+        list_id: this.state.listId,
+      },
+    };
+    this.props.onSubmit(this.props.card.id, updatedCard, () => {
+      this.props.toggleMovePopover();
+    });
   };
 
   render() {
@@ -56,6 +70,7 @@ class MoveCardPopoverContainer extends React.Component {
         state={this.props.state}
         boardId={this.state.boardId}
         listId={this.state.listId}
+        handleMoveCard={this.handleMoveCard}
       />
     );
   }

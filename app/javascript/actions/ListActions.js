@@ -18,6 +18,7 @@ export function updateListSuccess(id, updatedList) {
 export function createList(list, callback) {
   return function(dispatch) {
     dispatch(createListRequest());
+    console.log(list);
     apiClient.createList(list, (newList) => {
       dispatch(createListSuccess(newList));
 

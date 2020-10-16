@@ -5,9 +5,11 @@ import store from "../../lib/Store";
 import * as actions from "../../actions/BoardActions";
 import * as cardActions from "../../actions/CardActions";
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    lists: state.lists,
+    lists: state.lists.filter((list) => {
+      return list.board_id === ownProps.boardId;
+    }),
   };
 };
 
@@ -53,6 +55,7 @@ class ListListingContainer extends React.Component {
           lists={this.props.lists || []}
           handleCloseCardForm={this.handleCloseCardForm}
           handleNewCard={this.handleNewCard}
+          boardId={this.props.boardId}
         />
       </div>
     );

@@ -3,8 +3,12 @@ import React from "react";
 const MoveCardPopover = ({
   handleUpdateLists,
   toggleMovePopover,
+  handleChangedSelected,
+  handleMoveCard,
   state,
   card,
+  boardId,
+  listId,
 }) => {
   const onCloseClick = (e) => {
     e.preventDefault();
@@ -12,11 +16,12 @@ const MoveCardPopover = ({
   };
 
   let currentBoardTitle;
+  let currentListTitle;
 
   const boardOptions = state.boards.map((board) => {
     let selected;
 
-    if (board.id === card.board_id) {
+    if (board.id === boardId) {
       currentBoardTitle = board.title;
       selected = true;
     }
@@ -27,25 +32,48 @@ const MoveCardPopover = ({
     );
   });
 
-  let currentListTitle;
-
-  const listOptions = state.lists.map((list) => {
-    let selected;
-    if (list.id === card.list_id) {
-      currentListTitle = list.title;
-      selected = true;
-    }
-
-    return (
-      <option selected={selected} value={list.id} key={list.id}>
-        {list.title}
-      </option>
-    );
+  const listOptions = state.lists.filter((list) => {
+    return list.board_id === boardId;
   });
 
-  const handleUpdateListsChange = (e) => {
+  let mappedListOptions;
+
+  if (listOptions.length === 1) {
+    currentListTitle = listOptions[0].title;
+    mappedListOptions = [
+      <option
+        selected={selected}
+        value={listOptions[0].id}
+        key={listOptions[0].id}
+      >
+        {listOptions[0].title}
+      </option>,
+    ];
+  } else {
+    mappedListOptions = listOptions.map((list) => {
+      let selected;
+      console.log(listId, list);
+      if (list.id === listId) {
+        currentListTitle = list.title;
+        selected = true;
+      }
+
+      return (
+        <option selected={selected} value={list.id} key={list.id}>
+          {list.title}
+        </option>
+      );
+    });
+  }
+
+  const handleUpdateListChange = (e) => {
+    const listId = e.target.value;
+    handleChangedSelected("list", +listId);
+  };
+
+  const handleUpdateBoardChange = (e) => {
     const boardId = e.target.value;
-    handleUpdateLists(+boardId);
+    handleChangedSelected("board", +boardId);
   };
 
   return (
@@ -60,35 +88,30 @@ const MoveCardPopover = ({
             <span class="label">Board</span>
             <span class="value js-board-value">{currentBoardTitle}</span>
             <label>Board</label>
-            <select onChange={handleUpdateListsChange}>{boardOptions}</select>
+            <select onChange={handleUpdateBoardChange}>{boardOptions}</select>
           </div>
           <div>
             <div class="button-link setting list">
               <span class="label">List</span>
               <span class="value js-list-value">{currentListTitle}</span>
               <label>List</label>
-              <select>{listOptions}</select>
+              <select onChange={handleUpdateListChange}>
+                {mappedListOptions}
+              </select>
             </div>
             <div class="button-link setting position">
               <span class="label">Position</span>
-              <span class="value">1</span>
+              <span class="value">End of List</span>
               <label>Position</label>
               <select>
                 <option value="top" selected="selected">
                   1 (current)
                 </option>
-                <option value="98303">2</option>
-                <option value="163839">3</option>
-                <option value="212991">4</option>
-                <option value="245759">5</option>
-                <option value="278527">6</option>
-                <option value="311295">7</option>
-                <option value="bottom">8</option>
               </select>
             </div>
           </div>
 
-          <button class="button" type="submit">
+          <button onClick={handleMoveCard} class="button" type="submit">
             Move
           </button>
         </div>
