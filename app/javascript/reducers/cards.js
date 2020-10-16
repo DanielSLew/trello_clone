@@ -1,9 +1,15 @@
 export default function cards(state = [], action) {
   switch (action.type) {
     case "FETCH_BOARD_SUCCESS":
-      return action.board.lists.flatMap((list) => {
+      const filteredCards = state.filter((card) => {
+        return card.board_id !== action.board.id;
+      });
+
+      const newCards = action.board.lists.flatMap((list) => {
         return list.cards;
       });
+
+      return filteredCards.concat(newCards);
     case "FETCH_CARD_SUCCESS":
       const cards = state.map((card) => {
         if (card.id === action.card.id) {

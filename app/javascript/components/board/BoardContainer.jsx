@@ -6,22 +6,40 @@ import { useParams } from "react-router-dom";
 import Board from "./Board";
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-    board: state.boards.find((board) => {
-      return board.id == ownProps.match.params.id;
-    }),
-  };
+  const url = ownProps.match.url;
+  let card;
+
+  if (url.match("boards")) {
+    return {
+      board: state.boards.find((board) => {
+        return board.id === +ownProps.match.params.id;
+      }),
+      boardId: +ownProps.match.params.id,
+    };
+  } else {
+    card = state.cards.find((card) => {
+      return card.id === +ownProps.match.params.id;
+    });
+
+    if (card) {
+      return {
+        board: state.boards.find((board) => {
+          return board.id === card.board_id;
+        }),
+        boardId: card.board_id,
+        card,
+      };
+    } else {
+      return { board: null, boardId: null, card: card };
+    }
+  }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   //instead of id
   return {
-    onFetchBoard: () => {
-      const url = ownProps.match.url;
-      
-      if (url.match('boards')) {
-        dispatch(actions.fetchBoard(+ownProps.match.params.id));
-      }
+    onFetchBoard: (boardId) => {
+      dispatch(actions.fetchBoard(boardId));
     },
   };
 };
@@ -30,7 +48,28 @@ class BoardContainer extends React.Component {
   handleAddToList = () => {};
 
   componentDidMount() {
-    this.props.onFetchBoard();
+    const url = this.props.match.url;
+    let boardId;
+
+    if (url.match("boards")) {
+      boardId = +this.props.match.params.id;
+    } else {
+      if (this.props.card) {
+        boardId = this.props.card.board_id;
+      } else {
+        boardId = null;
+      }
+    }
+
+    if (!boardId) return;
+
+    this.props.onFetchBoard(boardId);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.boardId !== this.props.boardId && this.props.boardId) {
+      this.props.onFetchBoard(this.props.boardId);
+    }
   }
 
   render() {

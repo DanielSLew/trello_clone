@@ -52,6 +52,7 @@ class CardModalContainer extends React.Component {
     redirect: false,
     labelsPopover: false,
     dueDatePopover: false,
+    movePopover: false,
   };
 
   componentDidMount() {
@@ -60,7 +61,7 @@ class CardModalContainer extends React.Component {
 
   componentDidUpdate() {
     if (this.props.card && !this.state.boardLoaded) {
-      this.props.onFetchBoard(this.props.card.board_id);
+      // this.props.onFetchBoard(this.props.card.board_id);
       this.setState({
         boardLoaded: true,
         title: this.props.card.title,
@@ -152,6 +153,12 @@ class CardModalContainer extends React.Component {
     });
   };
 
+  toggleMovePopover = () => {
+    this.setState((prevState) => {
+      return { movePopover: !prevState.movePopover };
+    });
+  };
+
   toggleLabel = (label) => {
     let newLabels = this.props.card.labels.slice();
     if (newLabels.includes(label)) {
@@ -199,6 +206,7 @@ class CardModalContainer extends React.Component {
           toggleLabelPopover={this.toggleLabelPopover}
           toggleLabel={this.toggleLabel}
           toggleDueDatePopover={this.toggleDueDatePopover}
+          toggleMovePopover={this.toggleMovePopover}
           updateDate={this.updateDate}
           state={this.state}
         ></CardModal>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import DueDate from "./DueDate";
 import CommentSection from "./CommentSection";
 import ActivityList from "./ActivityList";
+import MoveCardPopoverContainer from "./MoveCardPopoverContainer";
 
 const CardModal = ({
   card,
@@ -17,6 +18,7 @@ const CardModal = ({
   toggleLabelPopover,
   toggleLabel,
   toggleDueDatePopover,
+  toggleMovePopover,
   updateDate,
   state,
 }) => {
@@ -46,7 +48,6 @@ const CardModal = ({
 
   const onLabelClick = (e) => {
     const label = labels[e.target.getAttribute("data-id")];
-    console.log(label);
     toggleLabel(label);
   };
 
@@ -249,8 +250,14 @@ const CardModal = ({
             </li>
           </ul>
           <h2>Actions</h2>
+          {state.movePopover && (
+            <MoveCardPopoverContainer
+              card={card}
+              toggleMovePopover={toggleMovePopover}
+            />
+          )}
           <ul>
-            <li className="move-button">
+            <li onClick={toggleMovePopover} className="move-button">
               <i className="forward-icon sm-icon"></i>Move
             </li>
             <li className="copy-button">

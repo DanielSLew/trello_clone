@@ -10,4 +10,6 @@ json.lists(@board.lists) do |list|
       json.merge! action.attributes
     end
   end
+
+  json.cards_count list.cards.size
 end
